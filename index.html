@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pass Gen</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js">
+	</script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #eee;
+    }
+
+    form {
+      width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 10px #ccc;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      box-shadow: inset 0 0 5px #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      box-shadow: 0 0 10px #333;
+    }
+    
+    #copy-to-clipboard-button {
+      margin-bottom: 2%;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <form id="pgen">
+    <label for="mkey">Master Key:</label>
+    <input type="text" id="mkey" name="mkey">
+
+    <label for="skey">Second Key:</label>
+    <input type="text" id="skey" name="skey">
+    
+    <label for="gkey">Generated Key:</label>
+    <input type="text" id="gkey" name="gkey" readonly>
+
+    <button type="button" id="copy-to-clipboard-button">Copy to clipboard</button>
+    
+    <button id="inject" type="submit" >Submit</button>
+  </form>
+  
+	<script>
+	  document.getElementById('copy-to-clipboard-button').addEventListener('click', function() {
+      const email = document.getElementById('gkey').value;
+      navigator.clipboard.writeText(email);
+    });
+	  if(window.location.toString().includes("mkey")){
+	      const passkey = window.location.toString().split("?")[1].split("&");
+	      const mkey = passkey[0].split("=")[1]
+	      const skey = passkey[1].split("=")[1]
+	      var hash = CryptoJS.SHA256(mkey+skey).toString();
+	      document.getElementById("gkey").value = hash;
+    }
+	</script>
+</body>
+</html>
+
